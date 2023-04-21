@@ -1,0 +1,22 @@
+{
+  "name": "nuxt-app",
+  "private": true,
+  "scripts": {
+    "build": "nuxt build",
+    "dev": "nuxt dev",
+    "generate": "nuxt generate",
+    "preview": "nuxt preview",
+    "postinstall": "nuxt prepare"
+  },
+  "devDependencies": {
+    "nuxt": "^3.4.1",
+    "sass": "^1.62.0"
+  },
+  "dependencies": {
+    "@chenfengyuan/vue-countdown": "2",
+    "nuxt-swiper": "^1.1.0",
+    "photoswipe": "github:dimsemenov/photoswipe#v5-beta",
+    "vue": "3",
+    "vue-slick-carousel": "^1.0.6"
+  }
+}
