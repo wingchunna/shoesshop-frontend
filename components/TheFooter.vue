@@ -122,7 +122,9 @@
                       <NuxtLink to="/branches">Hệ thống cửa hàng</NuxtLink>
                     </li>
                     <li>
-                      <NuxtLink to="/contact">Thông tin liên lạc</NuxtLink>
+                      <NuxtLink to="/contact" class="thongtinlienlac"
+                        >Thông tin liên lạc</NuxtLink
+                      >
                     </li>
                   </ul>
                 </div>
@@ -201,7 +203,10 @@ export default {};
 }
 .shop-name {
   color: orangered;
-  font-size: 1.2rem;
+  font-size: 1rem;
   font-weight: 800;
+}
+h4 {
+  padding-top: 20px;
 }
 </style>

@@ -1,7 +1,7 @@
 <template>
   <small-banner></small-banner>
   <the-breadcum></the-breadcum>
-  <product-content></product-content>
+  <product-detail></product-detail>
 </template>
 
 <script setup>

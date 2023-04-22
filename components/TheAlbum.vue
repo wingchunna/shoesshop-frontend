@@ -94,7 +94,8 @@
 
 <style scope>
 .image-box {
-  max-width: 420px;
+  max-width: 90%;
+  width: 420;
   height: 350px;
   margin: 20px 0px;
   cursor: pointer;
@@ -102,6 +103,7 @@
     rgba(0, 0, 0, 0.3) 0px 18px 36px -18px;
   transform: scale(1);
   transition: all 0.4s ease-in-out;
+  border-radius: 8px 8px 0px 0px;
 }
 .image-box:hover {
   transition: all 0.5s ease-in-out;
@@ -111,6 +113,7 @@
   width: 100%;
   height: 250px;
   margin-bottom: 10px;
+  border-radius: 8px 8px 0px 0px;
 }
 .album-title {
   width: 100%;

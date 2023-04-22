@@ -37,28 +37,6 @@
         <div class="col-sm-12">
           <div class="main-menu">
             <div class="menu-left">
-              <div class="navbar">
-                <a href="javascript:void(0)" onclick="openNav()">
-                  <div class="bar-style">
-                    <i class="fa fa-bars sidebar-bar" aria-hidden="true"></i>
-                  </div>
-                </a>
-                <div id="mySidenav" class="sidenav">
-                  <a
-                    href="javascript:void(0)"
-                    class="sidebar-overlay"
-                    onclick="closeNav()"
-                  ></a>
-                  <nav>
-                    <div onclick="closeNav()">
-                      <div class="sidebar-back text-start">
-                        <i class="fa fa-angle-left pe-2" aria-hidden="true"></i>
-                        Trở lại
-                      </div>
-                    </div>
-                  </nav>
-                </div>
-              </div>
               <div class="brand-logo">
                 <a href="index.html"
                   ><img
@@ -91,6 +69,10 @@
                     <li>
                       <NuxtLink to="/products">Sản phẩm</NuxtLink>
                     </li>
+                    <li>
+                      <NuxtLink to="/categories">Bộ sưu tập</NuxtLink>
+                    </li>
+
                     <li>
                       <NuxtLink to="/library">Thư viện</NuxtLink>
                     </li>

@@ -1,9 +1,11 @@
 <template>
-  <h1>Sản phẩm mới</h1>
+  <small-banner></small-banner>
+  <the-breadcum></the-breadcum>
+  <product-content></product-content>
 </template>
 
-<script>
-export default {};
+<script setup>
+definePageMeta({});
 </script>
 
 <style></style>

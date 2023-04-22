@@ -72,7 +72,10 @@
                         <a href="#">Giới thiệu</a>
                       </li>
                       <li>
-                        <a href="#">Sản phẩm</a>
+                        <NuxtLink to="/products">Sản phẩm</NuxtLink>
+                      </li>
+                      <li>
+                        <a href="#">Bộ sưu tập</a>
                       </li>
 
                       <li>

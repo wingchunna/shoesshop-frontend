@@ -31,7 +31,7 @@
         </div>
         <div class="col-xl-6 col-md-6 col-sm-12">
           <div class="product-search-count-bottom">
-            <h5>Hiển thị bài viết từ 1-24 of 10 kết quả</h5>
+            <h5>Hiển thị kết quả</h5>
           </div>
         </div>
       </div>

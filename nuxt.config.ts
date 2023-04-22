@@ -14,12 +14,19 @@ export default defineNuxtConfig({
       ],
       script: [
         { src: "/js/jquery-3.3.1.min.js" },
+
         { src: "/js/jquery-ui.min.js" },
-        { src: "/js/slick.js" },
+        { src: "/js/360view.js" },
+
         { src: "/js/menu.js" },
         { src: "/js/lazysizes.min.js" },
+        { src: "/js/slick.js" },
+        { src: "/js/price-range.js" },
+        { src: "/js/sticky-cart-bottom.js" },
         { src: "/js/bootstrap.bundle.min.js" },
+
         { src: "/js/bootstrap-notify.min.js" },
+        { src: "/js/jquery.elevatezoom.js" },
         { src: "/js/fly-cart.js" },
         { src: "/js/jquery.fancybox.pack.js" },
 
@@ -44,6 +51,7 @@ export default defineNuxtConfig({
     "@/assets/css/vendors/slick.css",
     "@/assets/css/vendors/slick-theme.css",
     "@/assets/css/vendors/animate.css",
+    "@/assets/css/vendors/price-range.css",
     "@/assets/css/vendors/themify-icons.css",
     "@/assets/css/vendors/bootstrap.css",
     "@/assets/css/style.css",
@@ -62,5 +70,15 @@ export default defineNuxtConfig({
     // prefix: 'Swiper',
     // public/cssLang: 'css',
     // modules: ['navigation', 'pagination'], // all modules are imported by default
+  },
+  build: {
+    loaders: {
+      sass: {
+        implementation: require("sass"),
+      },
+      scss: {
+        implementation: require("sass"),
+      },
+    },
   },
 });

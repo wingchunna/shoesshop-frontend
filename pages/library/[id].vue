@@ -1,20 +1,30 @@
 <template>
+  <small-banner></small-banner>
   <div class="container">
-    <div class="image-gallery" v-for="(img, index) in images" :key="index">
-      <a :href="img" class="fancybox" rel="gallery" title="Sample title 1"
-        ><img :src="img"
-      /></a>
+    <the-breadcum></the-breadcum>
+    <div class="row">
+      <div
+        class="image-gallery col-xl-3 col-md-3 col-3"
+        v-for="(img, index) in images"
+        :key="index"
+      >
+        <a :href="img" class="fancybox" rel="gallery" title="Sample title 1"
+          ><img :src="img"
+        /></a>
+      </div>
     </div>
   </div>
 </template>
 
 <script setup>
 const images = [
-  "https://static.nike.com/a/images/t_default/471bffe8-9757-4b0e-8416-8ed1a9e5c7d0/pegasus-39-road-running-shoes-kmZSD6.png",
+  "https://thao.giaythainguyen.com/wp-content/uploads/2020/04/giay-micky-2.jpg",
 
-  "https://images.vans.com/is/image/VansEU/VN000EE3RED-HERO?$PDP-FULL-IMAGE$",
+  "https://salt.tikicdn.com/cache/w1200/ts/product/4f/e4/f5/68c4845f9250b913b57133347228fa56.jpg",
 
-  "https://cld.accentuate.io/5353320710301/1663094662150/Madrid_Heathered-Grey_Feature-Float-1380.png?v=1669223444554&options=w1000",
+  "https://quatangyeuthuong.com.vn/uploads/source/giay/247383677-113417091129323-4728723811360494237-n.png",
+  "https://down-vn.img.susercontent.com/file/d0ab3f520d879b170de68ffe686080c0_tn",
+  "https://vn-test-11.slatic.net/p/869c1de27a925ec9c2f57e8a3f5022cf.jpg",
 ];
 $(document).ready(function () {
   $(".fancybox").fancybox({
@@ -33,12 +43,17 @@ $(document).ready(function () {
     opacity: true, // default false
     helpers: {
       title: null,
+      overlay: {
+        css: {
+          display: "block",
+        },
+      },
     },
     afterLoad: function () {
       $.extend(this, {
-        aspectRatio: false,
+        aspectRatio: true,
         fitToView: false,
-        width: "80%",
+        // width: "60%",
         height: "80%",
         maxWidth: "90%",
       });
@@ -51,5 +66,11 @@ $(document).ready(function () {
 .fancybox img {
   width: 300px;
   height: 250px;
+  margin: 20px;
+  box-shadow: rgba(0, 0, 0, 0.05) 0px 6px 24px 0px,
+    rgba(0, 0, 0, 0.08) 0px 0px 0px 1px;
+}
+.image-gallery {
+  padding: 20px;
 }
 </style>
