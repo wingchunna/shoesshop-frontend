@@ -34,13 +34,6 @@
           <div class="col-sm-12">
             <div class="main-menu">
               <div class="menu-left">
-                <div class="navbar">
-                  <a href="javascript:void(0)">
-                    <div class="bar-style">
-                      <i class="fa fa-bars sidebar-bar" aria-hidden="true"></i>
-                    </div>
-                  </a>
-                </div>
                 <div class="brand-logo">
                   <a href="index.html"
                     ><img

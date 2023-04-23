@@ -23,8 +23,8 @@
               <li class="onhover-dropdown mobile-account">
                 <i class="fa fa-user" aria-hidden="true"></i> Tài khoản
                 <ul class="onhover-show-div">
-                  <li><a href="login.html">Đăng nhập</a></li>
-                  <li><a href="register.html">Đăng ký</a></li>
+                  <li><NuxtLink to="/login">Đăng nhập</NuxtLink></li>
+                  <li><NuxtLink to="/register">Đăng ký</NuxtLink></li>
                 </ul>
               </li>
             </ul>

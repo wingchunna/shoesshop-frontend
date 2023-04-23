@@ -27,6 +27,7 @@ export default defineNuxtConfig({
 
         { src: "/js/bootstrap-notify.min.js" },
         { src: "/js/jquery.elevatezoom.js" },
+
         { src: "/js/fly-cart.js" },
         { src: "/js/jquery.fancybox.pack.js" },
 
