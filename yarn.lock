@@ -2917,6 +2917,11 @@ mlly@^1.0.0, mlly@^1.1.1, mlly@^1.2.0:
     pkg-types "^1.0.2"
     ufo "^1.1.1"
 
+mosha-vue-toastify@^1.0.23:
+  version "1.0.23"
+  resolved "https://registry.npmjs.org/mosha-vue-toastify/-/mosha-vue-toastify-1.0.23.tgz"
+  integrity sha512-K9fij3e3H+E/Lj82ISrgmyKrtM5RNmtZC/KG/KH47+oZGmzAkN/Zuz39kBdT/Mp8OxaHuIWQntEUMP+HdmK1xA==
+
 mri@^1.2.0:
   version "1.2.0"
   resolved "https://registry.npmjs.org/mri/-/mri-1.2.0.tgz"

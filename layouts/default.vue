@@ -10,6 +10,7 @@
       <the-footer></the-footer>
       <modal-popup></modal-popup>
       <cart-modal-popup></cart-modal-popup>
+
       <button-to-top></button-to-top>
     </ClientOnly>
   </div>

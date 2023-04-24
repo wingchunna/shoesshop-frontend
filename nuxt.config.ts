@@ -1,6 +1,8 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
 import { fileURLToPath } from "url";
 import { defineNuxtModule } from "nuxt";
+import path from "path";
+import fs from "fs";
 export default defineNuxtConfig({
   app: {
     head: {
@@ -80,6 +82,23 @@ export default defineNuxtConfig({
       scss: {
         implementation: require("sass"),
       },
+    },
+  },
+  runtimeConfig: {
+    // The private keys which are only available server-side
+    apiSecret: "",
+    // Keys within public are also exposed client-side
+    public: {
+      apiBase: "https://shoes-shop-dw31.onrender.com/api/v1",
+    },
+  },
+  optimizeDeps: {
+    exclude: ["js-big-decimal"],
+  },
+  server: {
+    https: {
+      key: fs.readFileSync(path.resolve(__dirname, "server.key")),
+      cert: fs.readFileSync(path.resolve(__dirname, "server.crt")),
     },
   },
 });
