@@ -114,7 +114,7 @@ async function handleRegister() {
     password: password.value,
   });
   console.log(data);
-  await useFetch("http://localhost:3300/api/v1" + "/users/register", {
+  await useFetch(apiBase + "/users/register", {
     method: "POST",
     body: data,
 
