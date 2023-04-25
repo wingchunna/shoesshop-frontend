@@ -1,8 +1,7 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
 import { fileURLToPath } from "url";
 import { defineNuxtModule } from "nuxt";
-import path from "path";
-import fs from "fs";
+
 export default defineNuxtConfig({
   app: {
     head: {
@@ -94,11 +93,5 @@ export default defineNuxtConfig({
   },
   optimizeDeps: {
     exclude: ["js-big-decimal"],
-  },
-  server: {
-    https: {
-      key: fs.readFileSync(path.resolve(__dirname, "server.key")),
-      cert: fs.readFileSync(path.resolve(__dirname, "server.crt")),
-    },
   },
 });

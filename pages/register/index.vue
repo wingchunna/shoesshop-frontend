@@ -1,10 +1,8 @@
 <template>
   <small-banner></small-banner>
-  <register-form></register-form>
+  <the-register-form></the-register-form>
 </template>
 
-<script setup>
-import RegisterForm from "~/components/RegisterForm.vue";
-</script>
+<script setup></script>
 
 <style></style>

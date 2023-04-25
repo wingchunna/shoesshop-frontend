@@ -3,7 +3,7 @@
   "private": true,
   "scripts": {
     "build": "nuxt build",
-    "dev": "nuxt dev --https --ssl-key server.key --ssl-cert server.crt  --port 3000 NODE_TLS_REJECT_UNAUTHORIZED=0",
+    "dev": "nuxt dev ",
     
     "generate": "nuxt generate",
     "preview": "nuxt preview",

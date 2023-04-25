@@ -86,6 +86,7 @@
 <script setup>
 import { defineComponent } from "vue";
 import { createToast } from "mosha-vue-toastify";
+
 const runtimeConfig = useRuntimeConfig();
 const apiBase = runtimeConfig.public.apiBase;
 let firstName = ref("");
@@ -105,28 +106,41 @@ async function handleRegister() {
     );
   }
   // register user
-  let formData = new FormData();
-  const fullname = computed(() => firstName.value + " " + lastName.value);
-  formData.append("fullname", fullname);
-  formData.append("email", email.value);
-  formData.append("password", password.value);
 
-  const { data, error } = await useFetch(apiBase + "/users/register", {
+  let fullname = computed(() => firstName.value + " " + lastName.value);
+  let data = JSON.stringify({
+    fullname: fullname.value,
+    email: email.value,
+    password: password.value,
+  });
+  console.log(data);
+  await useFetch("http://localhost:3300/api/v1" + "/users/register", {
     method: "POST",
-    body: formData,
-    mode: "no-cors",
+    body: data,
+
     initialCache: false,
     headers: {
-      // Access a private variable (only available on the server)
-
       "Content-Type": "application/json",
+      Accept: "application/json",
+      // Access a private variable (only available on the server)
     },
     onResponse({ request, response, options }) {
       // Process the response data
-      console.log(response);
+      if (response.status === 403) {
+        createToast("Tài khoản đã tồn tại !", toastOption);
+      }
+      if (response.status === 500) {
+        createToast("Thông tin bạn nhập không đúng !", toastOption);
+      }
+      if (response.status === 201) {
+        createToast("Bạn đã đăng ký thành công !", toastOption);
+        navigateTo({
+          path: "/login",
+        });
+      }
     },
   });
-  // console.log(data);
+
   // console.log(error.value);
 }
 </script>
