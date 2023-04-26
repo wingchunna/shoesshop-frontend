@@ -3,12 +3,9 @@
   <login-form></login-form>
 </template>
 
-<script>
+<script setup>
 import LoginForm from "~/components/LoginForm.vue";
 import SmallBanner from "~/components/SmallBanner.vue";
-export default {
-  components: { LoginForm, SmallBanner },
-};
 </script>
 
 <style></style>

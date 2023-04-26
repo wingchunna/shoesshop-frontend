@@ -113,7 +113,7 @@ async function handleRegister() {
     email: email.value,
     password: password.value,
   });
-  console.log(data);
+
   await useFetch(apiBase + "/users/register", {
     method: "POST",
     body: data,
@@ -125,7 +125,7 @@ async function handleRegister() {
       // Access a private variable (only available on the server)
     },
     onResponse({ request, response, options }) {
-      // Process the response data
+      //   Process the response data
       if (response.status === 403) {
         createToast("Tài khoản đã tồn tại !", toastOption);
       }

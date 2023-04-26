@@ -21,8 +21,7 @@
                   <a href="#"><i class="fa fa-heart" aria-hidden="true"></i></a>
                 </li>
                 <li class="onhover-dropdown mobile-account">
-                  <i class="fa fa-user" aria-hidden="true"></i> Tài khoản của
-                  tôi
+                  <i class="fa fa-user" aria-hidden="true"></i> Tài khoản
                 </li>
               </ul>
             </div>

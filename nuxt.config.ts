@@ -65,7 +65,7 @@ export default defineNuxtConfig({
     data: fileURLToPath(new URL("./assets/other/data", import.meta.url)),
     script: fileURLToPath(new URL("/public/js", import.meta.url)),
   },
-  modules: ["nuxt-swiper"],
+  modules: ["nuxt-swiper", "@pinia/nuxt", "@pinia-plugin-persistedstate/nuxt"],
   swiper: {
     // Swiper options
     //----------------------
@@ -88,7 +88,7 @@ export default defineNuxtConfig({
     apiSecret: "",
     // Keys within public are also exposed client-side
     public: {
-      apiBase: "https://shoes-shop-dw31.onrender.com/api/v1",
+      apiBase: "http://localhost:3300/api/v1",
     },
   },
   optimizeDeps: {

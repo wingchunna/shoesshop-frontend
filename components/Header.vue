@@ -21,10 +21,35 @@
                 <a href="#"><i class="fa fa-heart" aria-hidden="true"></i></a>
               </li>
               <li class="onhover-dropdown mobile-account">
-                <i class="fa fa-user" aria-hidden="true"></i> Tài khoản
+                <i
+                  v-if="userAuth.fullname"
+                  class="fa fa-user"
+                  aria-hidden="true"
+                >
+                  <span class="iconClass"
+                    >Xin chào {{ userAuth.fullname }}</span
+                  ></i
+                >
+
+                <i v-else class="fa fa-user" aria-hidden="true">
+                  <span class="iconClass">Tài khoản</span>
+                </i>
+
                 <ul class="onhover-show-div">
-                  <li><NuxtLink to="/login">Đăng nhập</NuxtLink></li>
-                  <li><NuxtLink to="/register">Đăng ký</NuxtLink></li>
+                  <li v-if="userAuth.fullname">
+                    <NuxtLink to="/login" @click="handleLogout()"
+                      >Đăng xuất</NuxtLink
+                    >
+                  </li>
+                  <div v-else>
+                    <li>
+                      <NuxtLink to="/login">Đăng nhập</NuxtLink>
+                    </li>
+
+                    <li>
+                      <NuxtLink to="/register">Đăng ký</NuxtLink>
+                    </li>
+                  </div>
                 </ul>
               </li>
             </ul>
@@ -229,6 +254,19 @@
 </template>
 
 <script setup>
+import { userStore } from "@/stores/user";
+import { storeToRefs } from "pinia";
+
+const store = userStore();
+const { setStateLogin } = store;
+const { userLogin } = storeToRefs(store);
+const userAuth = computed(() => toRaw(userLogin.value.user));
+const token = computed(() => toRaw(userLogin.value.token));
+
+function handleLogout() {
+  setStateLogin({}, "");
+}
+
 function handleSearch() {
   document.getElementById("search-overlay").style.display = "block";
 }
@@ -253,4 +291,11 @@ function searchItem() {
 .btn {
   color: aliceblue;
 }
+a.nuxt-link-active {
+  font-weight: bold;
+}
+.iconClass {
+  margin-left: 20px;
+}
+/* exact link will show the primary color for only the exact matching link */
 </style>
