@@ -87,29 +87,60 @@
                 </div>
               </div>
             </div>
-            <div class="product-wrapper-grid">
-              <div class="row margin-res">
-                <product-item></product-item>
-                <product-item></product-item>
-                <product-item></product-item>
-                <product-item></product-item>
-                <product-item></product-item>
-                <product-item></product-item>
+            <div class="row">
+              <div
+                class="col-xl-4"
+                v-for="(product, index) in productList"
+                :key="index"
+              >
+                <product-item :product="product"></product-item>
               </div>
             </div>
-            <the-pagination></the-pagination>
           </div>
+          <the-pagination></the-pagination>
         </div>
       </div>
     </div>
   </div>
 </template>
 
-<script>
+<script setup>
 import ProductItem from "./ProductItem.vue";
-export default {
-  components: { ProductItem },
-};
+const runtimeConfig = useRuntimeConfig();
+const apiBase = runtimeConfig.public.apiBase;
+
+// get products
+const { data } = await useFetch(apiBase + "/products", {
+  method: "GET",
+
+  initialCache: false,
+  headers: {
+    "Content-Type": "application/json",
+    Accept: "application/json",
+    // Access a private variable (only available on the server)
+  },
+  onResponse({ request, response, options }) {
+    // Process the response data
+    if (response.status === 403) {
+      createToast("Không tìm thấy nhãn hàng !", toastOption);
+    }
+    if (response.status === 500) {
+      createToast("Đã có lỗi xảy ra!", toastOption);
+    }
+    // console.log(response._data.brands);
+  },
+});
+
+const productList = data.value.products;
 </script>
 
-<style></style>
+<style>
+.product-wrapper-grid {
+}
+.product-list-item {
+  display: block;
+}
+.product-top-filter {
+  margin-bottom: 30px;
+}
+</style>

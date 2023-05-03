@@ -117,7 +117,7 @@
                 <ul>
                   <li>
                     <img
-                      src="../assets/images/fire.gif"
+                      src="/public/images/fire.gif"
                       class="img-fluid"
                       alt="image"
                     />
@@ -126,7 +126,7 @@
                   </li>
                   <li>
                     <img
-                      src="../assets/images/person.gif"
+                      src="/public/images/person.gif"
                       class="img-fluid user_img"
                       alt="image"
                     />
@@ -135,26 +135,34 @@
                   </li>
                 </ul>
               </div>
-              <h2>Women Pink Shirt</h2>
+              <h2>{{ props.product.name }}</h2>
               <div class="rating-section">
                 <div class="rating">
-                  <i class="fa fa-star"></i> <i class="fa fa-star"></i>
-                  <i class="fa fa-star"></i> <i class="fa fa-star"></i>
-                  <i class="fa fa-star"></i>
+                  <i class="fa fa-star" />
                 </div>
-                <h6>120 đánh giá</h6>
+                <h6>{{ props.product.reviews.length }} đánh giá</h6>
               </div>
               <div class="label-section">
                 <span class="badge badge-grey-color">#1 Sản phẩm bán chạy</span>
-                <span class="label-text">in fashion</span>
+                <span class="label-text">in {{ data.category.name }}</span>
               </div>
-              <h3 class="price-detail">
-                $32.96 <del>$459.00</del><span>55% off</span>
-              </h3>
-              <ul class="color-variant">
-                <li class="bg-light0 active"></li>
-                <li class="bg-light1"></li>
-                <li class="bg-light2"></li>
+              <h2 class="price-detail">
+                {{
+                  props.product.price.toLocaleString("it-IT", {
+                    style: "currency",
+                    currency: "VND",
+                  })
+                }}
+              </h2>
+              <ul
+                class="color-variant"
+                v-for="(color, index) in props.product.colors"
+                :key="index"
+              >
+                <li
+                  :class="active_el == index ? [color, 'active'] : color"
+                  @click="handleChooseColor(index)"
+                ></li>
               </ul>
               <div
                 id="selectSize"
@@ -167,7 +175,7 @@
                       href=""
                       data-bs-toggle="modal"
                       data-bs-target="#sizemodal"
-                      >bảng tra cứu kích thước</a
+                      >tham khảo size giày nữ</a
                     ></span
                   >
                 </h6>
@@ -186,7 +194,7 @@
                     <div class="modal-content">
                       <div class="modal-header">
                         <h5 class="modal-title" id="exampleModalLabel">
-                          Sheer Straight Kurta
+                          Bảng size giày
                         </h5>
                         <button
                           type="button"
@@ -199,7 +207,53 @@
                       </div>
                       <div class="modal-body">
                         <img
-                          src="../assets/images/size-chart.jpg"
+                          src="/public/images/size-nu.jpg"
+                          alt=""
+                          class="img-fluid blur-up lazyload"
+                        />
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <h6 class="product-title size-text">
+                  <span
+                    ><a
+                      href=""
+                      data-bs-toggle="modal"
+                      data-bs-target="#sizemodalmen"
+                      >tham khảo size giày nam</a
+                    ></span
+                  >
+                </h6>
+                <div
+                  class="modal fade"
+                  id="sizemodalmen"
+                  tabindex="-1"
+                  role="dialog"
+                  aria-labelledby="exampleModalLabel"
+                  aria-hidden="true"
+                >
+                  <div
+                    class="modal-dialog modal-dialog-centered"
+                    role="document"
+                  >
+                    <div class="modal-content">
+                      <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">
+                          Bảng size giày
+                        </h5>
+                        <button
+                          type="button"
+                          class="btn-close"
+                          data-bs-dismiss="modal"
+                          aria-label="Close"
+                        >
+                          <span aria-hidden="true">&times;</span>
+                        </button>
+                      </div>
+                      <div class="modal-body">
+                        <img
+                          src="/public/images/size-nam.jpg"
                           alt=""
                           class="img-fluid blur-up lazyload"
                         />
@@ -210,10 +264,17 @@
                 <h6 class="error-message">Chọn size</h6>
                 <div class="size-box">
                   <ul>
-                    <li><a href="javascript:void(0)">s</a></li>
-                    <li><a href="javascript:void(0)">m</a></li>
-                    <li><a href="javascript:void(0)">l</a></li>
-                    <li><a href="javascript:void(0)">xl</a></li>
+                    <li
+                      v-for="(size, index) in props.product.sizes"
+                      :key="index"
+                    >
+                      <a
+                        href="javascript:void(0)"
+                        :class="size_active_el == index ? 'active' : ''"
+                        @click="handleChooseSize(index)"
+                        >{{ size }}</a
+                      >
+                    </li>
                   </ul>
                 </div>
                 <h6 class="product-title">Số lượng</h6>
@@ -225,6 +286,7 @@
                         class="btn quantity-left-minus"
                         data-type="minus"
                         data-field=""
+                        @click="handleDecreaseQuantity()"
                       >
                         <i class="ti-angle-left"></i>
                       </button>
@@ -233,7 +295,7 @@
                       type="text"
                       name="quantity"
                       class="form-control input-number"
-                      value="1"
+                      v-model="quantity"
                     />
                     <span class="input-group-prepend"
                       ><button
@@ -241,6 +303,7 @@
                         class="btn quantity-right-plus"
                         data-type="plus"
                         data-field=""
+                        @click="handleIncreaseQuantity()"
                       >
                         <i class="ti-angle-right"></i></button
                     ></span>
@@ -249,7 +312,7 @@
               </div>
               <div class="product-buttons">
                 <a
-                  href="javascript:void(0)"
+                  @click="handleAddToCart()"
                   id="cartEffect"
                   class="btn btn-solid hover-solid btn-animation"
                   ><i class="fa fa-shopping-cart me-1" aria-hidden="true"></i>
@@ -264,7 +327,7 @@
                 <ul>
                   <li>
                     <img
-                      src="../assets/images/icon/truck.png"
+                      src="/public/images/icon/truck.png"
                       class="img-fluid"
                       alt="image"
                     />
@@ -362,6 +425,10 @@
 </template>
 
 <script setup>
+const props = defineProps(["product"]);
+const runtimeConfig = useRuntimeConfig();
+const apiBase = runtimeConfig.public.apiBase;
+
 import { ref, onMounted } from "vue";
 import Swiper, {
   Autoplay,
@@ -456,6 +523,61 @@ onMounted(() => {
   slider.controller.control = thumbs;
   thumbs.controller.control = slider;
 });
+
+// handle Increase - Decrease Quantity
+let quantity = ref(1);
+function handleDecreaseQuantity() {
+  if (quantity.value <= 1) {
+    quantity.value += 1;
+  }
+  quantity.value -= 1;
+}
+
+function handleIncreaseQuantity() {
+  if (quantity.value >= props.product.quantity) {
+    quantity.value -= props.product.quantity;
+  }
+  quantity.value += 1;
+}
+
+//get category
+const { data } = await useFetch(
+  apiBase + "/categories/" + props.product.category,
+  {
+    method: "GET",
+
+    initialCache: false,
+    headers: {
+      "Content-Type": "application/json",
+      Accept: "application/json",
+      // Access a private variable (only available on the server)
+    },
+    onResponse({ request, response, options }) {
+      // Process the response data
+      if (response.status === 403) {
+        createToast("Không tìm thấy sản phẩm !", toastOption);
+      }
+      if (response.status === 500) {
+        createToast("Đã có lỗi xảy ra!", toastOption);
+      }
+      // console.log(response._data.brands);
+    },
+  }
+);
+let active_el = ref(-1);
+let size_active_el = ref(-1);
+
+// chose color
+function handleChooseColor(el) {
+  active_el.value = el;
+}
+// chose size
+function handleChooseSize(el) {
+  size_active_el.value = el;
+}
+
+// add to Cart
+function handleAddToCart() {}
 </script>
 
 <style>

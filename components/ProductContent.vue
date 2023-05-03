@@ -17,51 +17,19 @@
                 <h3 class="collapse-block-title">Thương hiệu</h3>
                 <div class="collection-collapse-block-content">
                   <div class="collection-brand-filter">
-                    <div class="form-check collection-filter-checkbox">
+                    <div
+                      class="form-check collection-filter-checkbox"
+                      v-for="(brand, index) in brandList"
+                      :key="index"
+                    >
                       <input
                         type="checkbox"
                         class="form-check-input"
                         id="zara"
                       />
-                      <label class="form-check-label" for="zara">zara</label>
-                    </div>
-                    <div class="form-check collection-filter-checkbox">
-                      <input
-                        type="checkbox"
-                        class="form-check-input"
-                        id="vera-moda"
-                      />
-                      <label class="form-check-label" for="vera-moda"
-                        >vera-moda</label
-                      >
-                    </div>
-                    <div class="form-check collection-filter-checkbox">
-                      <input
-                        type="checkbox"
-                        class="form-check-input"
-                        id="forever-21"
-                      />
-                      <label class="form-check-label" for="forever-21"
-                        >forever-21</label
-                      >
-                    </div>
-                    <div class="form-check collection-filter-checkbox">
-                      <input
-                        type="checkbox"
-                        class="form-check-input"
-                        id="roadster"
-                      />
-                      <label class="form-check-label" for="roadster"
-                        >roadster</label
-                      >
-                    </div>
-                    <div class="form-check collection-filter-checkbox">
-                      <input
-                        type="checkbox"
-                        class="form-check-input"
-                        id="only"
-                      />
-                      <label class="form-check-label" for="only">only</label>
+                      <label class="form-check-label" for="zara">{{
+                        brand.name
+                      }}</label>
                     </div>
                   </div>
                 </div>
@@ -70,16 +38,21 @@
               <div class="collection-collapse-block open">
                 <h3 class="collapse-block-title">Màu sắc</h3>
                 <div class="collection-collapse-block-content">
-                  <div class="color-selector">
-                    <ul>
-                      <li class="color-1 active"></li>
-                      <li class="color-2"></li>
-                      <li class="color-3"></li>
-                      <li class="color-4"></li>
-                      <li class="color-5"></li>
-                      <li class="color-6"></li>
-                      <li class="color-7"></li>
-                    </ul>
+                  <div class="collection-brand-filter">
+                    <div
+                      class="form-check collection-filter-checkbox"
+                      v-for="(color, index) in colorList"
+                      :key="index"
+                    >
+                      <input
+                        type="checkbox"
+                        class="form-check-input"
+                        id="zara"
+                      />
+                      <label class="form-check-label" for="zara">{{
+                        color.name
+                      }}</label>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -88,41 +61,19 @@
                 <h3 class="collapse-block-title">kích thước</h3>
                 <div class="collection-collapse-block-content">
                   <div class="collection-brand-filter">
-                    <div class="form-check collection-filter-checkbox">
+                    <div
+                      class="form-check collection-filter-checkbox"
+                      v-for="(size, index) in sizes"
+                      :key="index"
+                    >
                       <input
                         type="checkbox"
                         class="form-check-input"
                         id="hundred"
                       />
-                      <label class="form-check-label" for="hundred">s</label>
-                    </div>
-                    <div class="form-check collection-filter-checkbox">
-                      <input
-                        type="checkbox"
-                        class="form-check-input"
-                        id="twohundred"
-                      />
-                      <label class="form-check-label" for="twohundred">m</label>
-                    </div>
-                    <div class="form-check collection-filter-checkbox">
-                      <input
-                        type="checkbox"
-                        class="form-check-input"
-                        id="threehundred"
-                      />
-                      <label class="form-check-label" for="threehundred"
-                        >l</label
-                      >
-                    </div>
-                    <div class="form-check collection-filter-checkbox">
-                      <input
-                        type="checkbox"
-                        class="form-check-input"
-                        id="fourhundred"
-                      />
-                      <label class="form-check-label" for="fourhundred"
-                        >xl</label
-                      >
+                      <label class="form-check-label" for="hundred">{{
+                        size
+                      }}</label>
                     </div>
                   </div>
                 </div>
@@ -168,6 +119,19 @@
 import Slider from "@vueform/slider";
 import ProductSlidebar from "./ProductSlidebar.vue";
 import ThePagination from "./ThePagination.vue";
+
+import { defineComponent } from "vue";
+import { createToast } from "mosha-vue-toastify";
+
+const runtimeConfig = useRuntimeConfig();
+const apiBase = runtimeConfig.public.apiBase;
+
+const toastOption = {
+  showCloseButton: true,
+  toastBackgroundColor: "#ff4c3b",
+};
+const sizes = ["35", "36", "37", "38", "39", "40", "41", "42", "43", "45"];
+
 let value = [8, 80];
 let format = function (value) {
   let money = Math.round(value) * 100000;
@@ -180,6 +144,57 @@ let format = function (value) {
 //   decimals: 0,
 // };
 let merge = 20;
+
+// get brand
+const { data } = await useFetch(apiBase + "/brands", {
+  method: "GET",
+
+  initialCache: false,
+  headers: {
+    "Content-Type": "application/json",
+    Accept: "application/json",
+    // Access a private variable (only available on the server)
+  },
+  onResponse({ request, response, options }) {
+    // Process the response data
+    if (response.status === 403) {
+      createToast("Không tìm thấy nhãn hàng !", toastOption);
+    }
+    if (response.status === 500) {
+      createToast("Đã có lỗi xảy ra!", toastOption);
+    }
+    // console.log(response._data.brands);
+  },
+});
+const brandList = data.value.brands;
+
+// get Color
+
+const { data: colors } = await useFetch(apiBase + "/colors", {
+  method: "GET",
+
+  initialCache: false,
+  headers: {
+    "Content-Type": "application/json",
+    Accept: "application/json",
+    // Access a private variable (only available on the server)
+  },
+  onResponse({ request, response, options }) {
+    // Process the response data
+    if (response.status === 403) {
+      createToast("Không tìm thấy màu sắc !", toastOption);
+    }
+    if (response.status === 500) {
+      createToast("Đã có lỗi xảy ra!", toastOption);
+    }
+    // console.log(response);
+  },
+});
+const colorList = colors.value.colors;
+
+// const colorList = color.value.colors;
+
+onMounted(() => {});
 </script>
 
 <style>

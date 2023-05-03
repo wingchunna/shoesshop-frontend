@@ -107,6 +107,12 @@ import { storeToRefs } from "pinia";
 const store = userStore();
 const { setStateLogin } = store;
 const { userLogin } = storeToRefs(store);
+
+if (store.userLogin.fullname) {
+  navigateTo({
+    path: "/products",
+  });
+}
 let email = ref("");
 let password = ref("");
 async function handleLogin() {

@@ -17,17 +17,19 @@
           </div>
           <div class="col-lg-6 text-end">
             <ul class="header-dropdown">
-              <li class="mobile-wishlist">
-                <a href="#"><i class="fa fa-heart" aria-hidden="true"></i></a>
+              <li class="mobile-wishlist" v-if="store.userLogin.isAdmin">
+                <NuxtLink to="/admin">
+                  <div class="admin-dashboard">Admin Dashboard</div>
+                </NuxtLink>
               </li>
               <li class="onhover-dropdown mobile-account">
                 <i
-                  v-if="userAuth.fullname"
+                  v-if="store.userLogin.fullname"
                   class="fa fa-user"
                   aria-hidden="true"
                 >
                   <span class="iconClass"
-                    >Xin chào {{ userAuth.fullname }}</span
+                    >Xin chào {{ store.userLogin.fullname }}</span
                   ></i
                 >
 
@@ -36,7 +38,7 @@
                 </i>
 
                 <ul class="onhover-show-div">
-                  <li v-if="userAuth.fullname">
+                  <li v-if="store.userLogin.fullname">
                     <NuxtLink to="/login" @click="handleLogout()"
                       >Đăng xuất</NuxtLink
                     >
@@ -259,9 +261,10 @@ import { storeToRefs } from "pinia";
 
 const store = userStore();
 const { setStateLogin } = store;
-const { userLogin } = storeToRefs(store);
-const userAuth = computed(() => toRaw(userLogin.value.user));
-const token = computed(() => toRaw(userLogin.value.token));
+// const { userLogin } = storeToRefs(store);
+
+// const userAuth = toRaw(userLogin?.value?.user);
+// const token = toRaw(userLogin?.value?.token);
 
 function handleLogout() {
   setStateLogin({}, "");
@@ -296,6 +299,13 @@ a.nuxt-link-active {
 }
 .iconClass {
   margin-left: 20px;
+}
+.admin-dashboard {
+  background-color: #ff4c3b;
+  padding: 5px 10px;
+  border-radius: 5px;
+  color: aliceblue;
+  font-weight: 600;
 }
 /* exact link will show the primary color for only the exact matching link */
 </style>

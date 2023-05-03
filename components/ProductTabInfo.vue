@@ -12,7 +12,7 @@
                 href="#top-home"
                 role="tab"
                 aria-selected="true"
-                ><i class="icofont icofont-ui-home"></i>Details</a
+                ><i class="icofont icofont-ui-home"></i>Mô tả</a
               >
               <div class="material-border"></div>
             </li>
@@ -24,7 +24,8 @@
                 href="#top-profile"
                 role="tab"
                 aria-selected="false"
-                ><i class="icofont icofont-man-in-glasses"></i>Specification</a
+                ><i class="icofont icofont-man-in-glasses"></i>Thông số kỹ
+                thuật</a
               >
               <div class="material-border"></div>
             </li>
@@ -63,10 +64,7 @@
               <div class="product-tab-discription">
                 <div class="part">
                   <p>
-                    The Model is wearing a white blouse from our stylist's
-                    collection, see the image for a mock-up of what the actual
-                    blouse would look like.it has text written on it in a black
-                    cursive language which looks great on a white color.
+                    {{ props.product.description }}
                   </p>
                 </div>
                 <div class="part">
@@ -224,8 +222,8 @@
   </section>
 </template>
 
-<script>
-export default {};
+<script setup>
+const props = defineProps(["product"]);
 </script>
 
 <style></style>

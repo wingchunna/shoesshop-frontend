@@ -87,7 +87,6 @@ li {
 }
 .active {
   color: #bc4b1f !important;
-  background-color: #ffff !important;
 }
 .tab-title {
   font-weight: bold;
