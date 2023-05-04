@@ -15,8 +15,8 @@
                     <input
                       type="text"
                       name="field-name"
-                      value=""
                       placeholder=""
+                      v-model="store.userLogin.firstName"
                     />
                   </div>
                   <div class="form-group col-md-6 col-sm-6 col-xs-12">
@@ -24,7 +24,7 @@
                     <input
                       type="text"
                       name="field-name"
-                      value=""
+                      v-model="store.userLogin.lastName"
                       placeholder=""
                     />
                   </div>
@@ -33,7 +33,7 @@
                     <input
                       type="text"
                       name="field-name"
-                      value=""
+                      v-model="store.userLogin.phone"
                       placeholder=""
                     />
                   </div>
@@ -42,7 +42,7 @@
                     <input
                       type="text"
                       name="field-name"
-                      value=""
+                      v-model="store.userLogin.email"
                       placeholder=""
                     />
                   </div>
@@ -52,7 +52,7 @@
                     <input
                       type="text"
                       name="field-name"
-                      value=""
+                      v-model="store.userLogin.address"
                       placeholder="Street address"
                     />
                   </div>
@@ -61,7 +61,7 @@
                     <input
                       type="text"
                       name="field-name"
-                      value=""
+                      v-model="store.userLogin.city"
                       placeholder=""
                     />
                   </div>
@@ -70,7 +70,16 @@
                     <input
                       type="text"
                       name="field-name"
-                      value=""
+                      v-model="store.userLogin.province"
+                      placeholder=""
+                    />
+                  </div>
+                  <div class="form-group col-md-12 col-sm-6 col-xs-12">
+                    <div class="field-label">Quốc gia</div>
+                    <input
+                      type="text"
+                      name="field-name"
+                      v-model="store.userLogin.country"
                       placeholder=""
                     />
                   </div>
@@ -79,12 +88,13 @@
                     <input
                       type="text"
                       name="field-name"
-                      value=""
+                      v-model="store.userLogin.postalCode"
                       placeholder=""
                     />
                   </div>
                   <div
                     class="form-group col-lg-12 col-md-12 col-sm-12 col-xs-12"
+                    v-if="!store.userLogin.email"
                   >
                     <input
                       type="checkbox"
@@ -102,9 +112,17 @@
                     <div class="title-box">
                       <div>Sản phẩm <span>Tổng tiền</span></div>
                     </div>
-                    <ul class="qty">
-                      <li>Pink Slim Shirt × 1 <span>$25.10</span></li>
-                      <li>SLim Fit Jeans × 1 <span>$555.00</span></li>
+                    <ul
+                      class="qty"
+                      v-for="(item, index) in userCartStore.productInCart"
+                      :key="index"
+                    >
+                      <li>
+                        {{ item.name }} × {{ item.quantity }}
+                        <span>{{
+                          item.totalPrice.toLocaleString("it-IT")
+                        }}</span>
+                      </li>
                     </ul>
                     <ul class="sub-total">
                       <li>
@@ -128,7 +146,15 @@
                       </li>
                     </ul>
                     <ul class="total">
-                      <li>Tổng tiền <span class="count">$620.00</span></li>
+                      <li>
+                        Tổng tiền
+                        <span class="count">{{
+                          userCartStore.totalSum.toLocaleString("it-IT", {
+                            style: "currency",
+                            currency: "VND",
+                          })
+                        }}</span>
+                      </li>
                     </ul>
                   </div>
                   <div class="payment-box">
@@ -186,7 +212,12 @@
   </section>
 </template>
 
-<script setup></script>
+<script setup>
+import { userStore } from "@/stores/user";
+import { cartStore } from "@/stores/cart";
+const store = userStore();
+const userCartStore = cartStore();
+</script>
 
 <style>
 #coupon {

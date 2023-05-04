@@ -24,13 +24,13 @@
                 <th scope="col">Tổng tiền</th>
               </tr>
             </thead>
-            <tbody>
+            <tbody v-for="(item, index) in store.productInCart" :key="index">
               <tr>
                 <td>
-                  <a href="#"><img src="/public/images/pro3/2.jpg" alt="" /></a>
+                  <a href="#"><img :src="item.image" alt="" /></a>
                 </td>
                 <td>
-                  <a href="#">cotton shirt</a>
+                  <a href="#">{{ item.name }}</a>
                   <div class="mobile-cart-content row">
                     <div class="col">
                       <div class="qty-box">
@@ -39,13 +39,12 @@
                             type="text"
                             name="quantity"
                             class="form-control input-number"
-                            value="1"
                           />
                         </div>
                       </div>
                     </div>
                     <div class="col">
-                      <h2 class="td-color">$63.00</h2>
+                      <h2 class="td-color">{{ item.color }}</h2>
                     </div>
                     <div class="col">
                       <h2 class="td-color">
@@ -55,7 +54,9 @@
                   </div>
                 </td>
                 <td>
-                  <h2>$63.00</h2>
+                  <h2>
+                    {{ item.price.toLocaleString("it-IT") }}
+                  </h2>
                 </td>
                 <td>
                   <div class="qty-box">
@@ -64,126 +65,18 @@
                         type="number"
                         name="quantity"
                         class="form-control input-number"
-                        value="1"
+                        v-model="item.quantity"
                       />
                     </div>
                   </div>
                 </td>
                 <td>
-                  <a href="#" class="icon"><i class="ti-close"></i></a>
+                  <a @click="hanleRemoveItem(index)" class="icon"
+                    ><i class="ti-close"></i
+                  ></a>
                 </td>
                 <td>
-                  <h2 class="td-color">$4539.00</h2>
-                </td>
-              </tr>
-            </tbody>
-            <tbody>
-              <tr>
-                <td>
-                  <a href="#"
-                    ><img src="/public/images/pro3/35.jpg" alt=""
-                  /></a>
-                </td>
-                <td>
-                  <a href="#">cotton shirt</a>
-                  <div class="mobile-cart-content row">
-                    <div class="col">
-                      <div class="qty-box">
-                        <div class="input-group">
-                          <input
-                            type="number"
-                            name="quantity"
-                            class="form-control input-number"
-                            value="1"
-                          />
-                        </div>
-                      </div>
-                    </div>
-                    <div class="col">
-                      <h2 class="td-color">$63.00</h2>
-                    </div>
-                    <div class="col">
-                      <h2 class="td-color">
-                        <a href="#" class="icon"><i class="ti-close"></i></a>
-                      </h2>
-                    </div>
-                  </div>
-                </td>
-                <td>
-                  <h2>$63.00</h2>
-                </td>
-                <td>
-                  <div class="qty-box">
-                    <div class="input-group">
-                      <input
-                        type="number"
-                        name="quantity"
-                        class="form-control input-number"
-                        value="1"
-                      />
-                    </div>
-                  </div>
-                </td>
-                <td>
-                  <a href="#" class="icon"><i class="ti-close"></i></a>
-                </td>
-                <td>
-                  <h2 class="td-color">$4539.00</h2>
-                </td>
-              </tr>
-            </tbody>
-            <tbody>
-              <tr>
-                <td>
-                  <a href="#"
-                    ><img src="/public/images/pro3/33.jpg" alt=""
-                  /></a>
-                </td>
-                <td>
-                  <a href="#">cotton shirt</a>
-                  <div class="mobile-cart-content row">
-                    <div class="col">
-                      <div class="qty-box">
-                        <div class="input-group">
-                          <input
-                            type="number"
-                            name="quantity"
-                            class="form-control input-number"
-                            value="1"
-                          />
-                        </div>
-                      </div>
-                    </div>
-                    <div class="col">
-                      <h2 class="td-color">$63.00</h2>
-                    </div>
-                    <div class="col">
-                      <h2 class="td-color">
-                        <a href="#" class="icon"><i class="ti-close"></i></a>
-                      </h2>
-                    </div>
-                  </div>
-                </td>
-                <td>
-                  <h2>$63.00</h2>
-                </td>
-                <td>
-                  <div class="qty-box">
-                    <div class="input-group">
-                      <input
-                        type="number"
-                        name="quantity"
-                        class="form-control input-number"
-                        value="1"
-                      />
-                    </div>
-                  </div>
-                </td>
-                <td>
-                  <a href="#" class="icon"><i class="ti-close"></i></a>
-                </td>
-                <td>
-                  <h2 class="td-color">$4539.00</h2>
+                  <h2 class="td-color">{{ item.totalPrice }}</h2>
                 </td>
               </tr>
             </tbody>
@@ -194,7 +87,14 @@
                 <tr>
                   <td>Tổng tiền :</td>
                   <td>
-                    <h2>$6935.00</h2>
+                    <h2>
+                      {{
+                        store.totalSum.toLocaleString("it-IT", {
+                          style: "currency",
+                          currency: "VND",
+                        })
+                      }}
+                    </h2>
                   </td>
                 </tr>
               </tfoot>
@@ -216,6 +116,24 @@
   </section>
 </template>
 
-<script setup></script>
+<script setup>
+import { cartStore } from "@/stores/cart";
+import { storeToRefs } from "pinia";
+const store = cartStore();
+const { removeItem, calTotalSum } = store;
+
+watch(store.productInCart, () => {
+  calTotalSum();
+});
+
+watch(() => {
+  console.log(store.productInCart);
+});
+
+function hanleRemoveItem(index) {
+  removeItem(index);
+  calTotalSum();
+}
+</script>
 
 <style></style>

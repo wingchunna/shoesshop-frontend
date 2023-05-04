@@ -182,64 +182,66 @@
                         <i class="ti-shopping-cart"></i>
                       </div>
                       <ul class="show-div shopping-cart">
-                        <li>
+                        <li
+                          v-for="(item, index) in userCartStore.productInCart"
+                          :key="index + `blah`"
+                        >
                           <div class="media">
                             <a href="#"
                               ><img
                                 class="me-3"
-                                src="/images/fashion/product/1.jpg"
+                                :src="item.image"
                                 alt="Generic placeholder image"
                             /></a>
                             <div class="media-body">
                               <a href="#">
-                                <h4>item name</h4>
+                                <h5>{{ item.name }}</h5>
                               </a>
-                              <h4><span>1 x $ 299.00</span></h4>
+                              <ul class="color-variant color-item">
+                                <li :class="item.color"></li>
+                              </ul>
+                              <h6>
+                                <span
+                                  ><b
+                                    >{{ item.quantity }} x {{ item.price }}</b
+                                  ></span
+                                >
+                              </h6>
                             </div>
                           </div>
                           <div class="close-circle">
-                            <a href="#"
-                              ><i class="fa fa-times" aria-hidden="true"></i
-                            ></a>
-                          </div>
-                        </li>
-                        <li>
-                          <div class="media">
-                            <a href="#"
-                              ><img
-                                class="me-3"
-                                src="/images/fashion/product/2.jpg"
-                                alt="Generic placeholder image"
-                            /></a>
-                            <div class="media-body">
-                              <a href="#">
-                                <h4>item name</h4>
-                              </a>
-                              <h4><span>1 x $ 299.00</span></h4>
-                            </div>
-                          </div>
-                          <div class="close-circle">
-                            <a href="#"
+                            <a @click="hanleRemoveItem(index)"
                               ><i class="fa fa-times" aria-hidden="true"></i
                             ></a>
                           </div>
                         </li>
                         <li>
                           <div class="total">
-                            <h5>Tạm tính : <span>$299.00</span></h5>
+                            <h5>
+                              Tạm tính :
+                              <span>{{
+                                userCartStore.totalSum.toLocaleString("it-IT", {
+                                  style: "currency",
+                                  currency: "VND",
+                                })
+                              }}</span>
+                            </h5>
                           </div>
                         </li>
                         <li>
                           <div class="buttons">
-                            <button
-                              href="cart.html"
+                            <NuxtLink
+                              to="/cart"
                               class="view-cart btn btn-giohang"
                             >
                               Giỏ hàng
-                            </button>
-                            <button href="#" class="checkout btn btn-thanhtoan">
+                            </NuxtLink>
+                            <NuxtLink
+                              to="/checkout"
+                              class="checkout btn btn-thanhtoan"
+                            >
                               Thanh toán
-                            </button>
+                            </NuxtLink>
                           </div>
                         </li>
                       </ul>
@@ -257,14 +259,23 @@
 
 <script setup>
 import { userStore } from "@/stores/user";
+import { cartStore } from "@/stores/cart";
 import { storeToRefs } from "pinia";
 
 const store = userStore();
 const { setStateLogin } = store;
+
+const userCartStore = cartStore();
+const { removeItem, calTotalSum } = userCartStore;
 // const { userLogin } = storeToRefs(store);
 
 // const userAuth = toRaw(userLogin?.value?.user);
 // const token = toRaw(userLogin?.value?.token);
+
+function hanleRemoveItem(index) {
+  removeItem(index);
+  calTotalSum();
+}
 
 function handleLogout() {
   setStateLogin({}, "");
@@ -283,10 +294,14 @@ function searchItem() {
 
 <style>
 .btn-thanhtoan {
-  background-color: rgb(255, 81, 0);
+  background-color: rgb(255, 255, 255);
 }
+.btn-thanhtoan:hover {
+  color: #f05016;
+}
+
 .btn-giohang {
-  background-color: darkslategrey;
+  background-color: rgb(255, 254, 253);
 }
 .btn-giohang:hover {
   color: rgb(255, 81, 0);
@@ -306,6 +321,9 @@ a.nuxt-link-active {
   border-radius: 5px;
   color: aliceblue;
   font-weight: 600;
+}
+.color-item {
+  width: 20px;
 }
 /* exact link will show the primary color for only the exact matching link */
 </style>

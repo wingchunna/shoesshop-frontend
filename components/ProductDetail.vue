@@ -161,7 +161,7 @@
               >
                 <li
                   :class="active_el == index ? [color, 'active'] : color"
-                  @click="handleChooseColor(index)"
+                  @click="handleChooseColor(index, color)"
                 ></li>
               </ul>
               <div
@@ -271,7 +271,7 @@
                       <a
                         href="javascript:void(0)"
                         :class="size_active_el == index ? 'active' : ''"
-                        @click="handleChooseSize(index)"
+                        @click="handleChooseSize(index, size)"
                         >{{ size }}</a
                       >
                     </li>
@@ -425,9 +425,20 @@
 </template>
 
 <script setup>
+import { createToast } from "mosha-vue-toastify";
+const toastOption = {
+  showCloseButton: true,
+  toastBackgroundColor: "#ff4c3b",
+};
+
 const props = defineProps(["product"]);
 const runtimeConfig = useRuntimeConfig();
 const apiBase = runtimeConfig.public.apiBase;
+
+import { cartStore } from "@/stores/cart";
+import { storeToRefs } from "pinia";
+const store = cartStore();
+const { setStateCart, calTotalSum } = store;
 
 import { ref, onMounted } from "vue";
 import Swiper, {
@@ -566,22 +577,46 @@ const { data } = await useFetch(
 );
 let active_el = ref(-1);
 let size_active_el = ref(-1);
+let colorChoosed = ref("");
+let sizeChoosed = ref("");
 
 // chose color
-function handleChooseColor(el) {
+function handleChooseColor(el, color) {
   active_el.value = el;
+  colorChoosed.value = color;
 }
 // chose size
-function handleChooseSize(el) {
+function handleChooseSize(el, size) {
   size_active_el.value = el;
+  sizeChoosed.value = size;
 }
 
 // add to Cart
-function handleAddToCart() {}
+function handleAddToCart() {
+  if (colorChoosed.value == "" || sizeChoosed.value == "") {
+    createToast("Bạn cần chọn màu sắc hoặc size của sản phẩm !", toastOption);
+  } else {
+    const product = {
+      name: props.product.name,
+      image: props.product.images[0],
+      price: props.product.price,
+      quantity: quantity.value,
+      color: colorChoosed.value,
+      size: sizeChoosed.value,
+      totalPrice: props.product.price * quantity.value,
+    };
+    setStateCart(product);
+
+    createToast("Đã thêm sản phẩm vào giỏ hàng !", toastOption);
+    calTotalSum();
+  }
+}
 </script>
 
 <style>
 @import "swiper/css";
+@import "mosha-vue-toastify/dist/style.css";
+
 .open3d {
   width: 50%;
   margin: auto;
