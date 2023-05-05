@@ -119,41 +119,49 @@
                     >
                       <li>
                         {{ item.name }} × {{ item.quantity }}
-                        <span>{{
-                          item.totalPrice.toLocaleString("it-IT")
-                        }}</span>
+                        <span
+                          ><b>{{
+                            item.totalPrice.toLocaleString("it-IT")
+                          }}</b></span
+                        >
                       </li>
                     </ul>
                     <ul class="sub-total">
                       <li>
-                        Mã giảm giá
-                        <span
-                          ><input type="text" id="coupon" name="coupon"
-                        /></span>
+                        Nhập mã giảm giá
+                        <b style="color: red"> SUMMER-2023 </b> để được giảm 20%
+                        trên tổng đơn hàng
                       </li>
                       <li>
-                        Giao hàng
-                        <div class="shipping">
-                          <div class="shopping-option">
-                            <input
-                              type="checkbox"
-                              name="free-shipping"
-                              id="free-shipping"
-                            />
-                            <label for="free-shipping">Miễn phí Ship</label>
-                          </div>
+                        <div>
+                          Mã giảm giá
+                          <input
+                            type="text"
+                            id="coupon"
+                            name="coupon"
+                            v-model="coupon"
+                          />
+
+                          <button
+                            @click.prevent="handleApplyCoupon(coupon)"
+                            class="btn btn-solid coupon-apply"
+                          >
+                            Áp Dụng
+                          </button>
                         </div>
                       </li>
                     </ul>
                     <ul class="total">
                       <li>
                         Tổng tiền
-                        <span class="count">{{
-                          userCartStore.totalSum.toLocaleString("it-IT", {
-                            style: "currency",
-                            currency: "VND",
-                          })
-                        }}</span>
+                        <span class="count"
+                          ><b>{{
+                            userCartStore.totalSum.toLocaleString("it-IT", {
+                              style: "currency",
+                              currency: "VND",
+                            })
+                          }}</b></span
+                        >
                       </li>
                     </ul>
                   </div>
@@ -168,6 +176,8 @@
                                 name="payment-group"
                                 id="payment-1"
                                 checked="checked"
+                                value="1"
+                                v-model="payment"
                               />
                               <label for="payment-1"
                                 >VNPAY<span class="small-text"
@@ -184,6 +194,8 @@
                                 type="radio"
                                 name="payment-group"
                                 id="payment-2"
+                                value="2"
+                                v-model="payment"
                               />
                               <label for="payment-2"
                                 >Thanh toán khi nhận hàng<span
@@ -199,7 +211,9 @@
                       </div>
                     </div>
                     <div class="text-end">
-                      <a href="#" class="btn-solid btn">Thanh toán</a>
+                      <a @click="handleCheckout()" class="btn-solid btn"
+                        >Thanh toán</a
+                      >
                     </div>
                   </div>
                 </div>
@@ -217,12 +231,72 @@ import { userStore } from "@/stores/user";
 import { cartStore } from "@/stores/cart";
 const store = userStore();
 const userCartStore = cartStore();
+const runtimeConfig = useRuntimeConfig();
+const apiBase = runtimeConfig.public.apiBase;
+
+import { createToast } from "mosha-vue-toastify";
+const toastOption = {
+  showCloseButton: true,
+  toastBackgroundColor: "#ff4c3b",
+};
+
+async function handleApplyCoupon(coupon) {
+  if (coupon) {
+    const { data } = await useFetch(apiBase + "/coupons/getcoupon/" + coupon, {
+      method: "GET",
+
+      initialCache: false,
+      headers: {
+        "Content-Type": "application/json",
+        Accept: "application/json",
+        // Access a private variable (only available on the server)
+      },
+      onResponse({ request, response, options }) {
+        // Process the response data
+        if (response.status === 403) {
+          createToast("Mã giảm giá không hợp lệ !", toastOption);
+        }
+        if (response.status === 500) {
+          createToast("Đã có lỗi xảy ra!", toastOption);
+        }
+        userCartStore.totalSum =
+          userCartStore.totalSum -
+          (userCartStore.totalSum * response._data.coupon.discount) / 100;
+      },
+    });
+  } else {
+    createToast("Bạn cần nhập mã giảm giá !", toastOption);
+  }
+}
+
+let payment = ref(1);
+let coupon = ref();
+function handleCheckout() {
+  if (payment.value == 1) {
+    // xử lý hàm tạo order với vnpay
+    // chuyển sang trang thanh toán thành công
+
+    navigateTo({
+      path: "/order-success",
+    });
+  } else {
+    // xử lý hàm tạo order
+
+    // chuyển sang trang thanh toán thành công
+    navigateTo({
+      path: "/order-success",
+    });
+  }
+}
 </script>
 
 <style>
+@import "mosha-vue-toastify/dist/style.css";
 #coupon {
   margin: 0px 20px;
   width: 50%;
+}
+.coupon-apply {
   float: right;
 }
 </style>
