@@ -237,7 +237,7 @@ import { userStore } from "@/stores/user";
 import { cartStore } from "@/stores/cart";
 // import { io } from "socket.io-client";
 const store = userStore();
-// const socket = io("http://localhost:3300", {
+// const socket = io("https://shoes-shop-dw31.onrender.com", {
 //   extraHeaders: {
 //     Authorization: `Bearer ${store.userToken}`,
 //   },

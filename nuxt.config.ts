@@ -88,7 +88,7 @@ export default defineNuxtConfig({
     apiSecret: "",
     // Keys within public are also exposed client-side
     public: {
-      apiBase: "http://localhost:3300/api/v1",
+      apiBase: "https://shoes-shop-dw31.onrender.com/api/v1",
     },
   },
   optimizeDeps: {
