@@ -41,17 +41,22 @@ export const cartStore = defineStore("cartStore", () => {
     if (productInCart.value) {
       totalSum.value = 0;
       productInCart.value.forEach((element) => {
-        totalSum.value += element.price * element.quantity;
-        element.totalPrice = element.price * element.quantity;
+        totalSum.value += element.price * element.itemBuy;
+        element.totalPrice = element.price * element.itemBuy;
       });
     }
   }
 
+  function resetCart() {
+    productInCart.value = [];
+    totalSum.value = 0;
+  }
   return {
     setStateCart,
     productInCart,
     totalSum,
     calTotalSum,
     removeItem,
+    resetCart,
   };
 });

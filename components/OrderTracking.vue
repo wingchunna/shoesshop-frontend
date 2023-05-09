@@ -151,7 +151,10 @@
   </section>
 </template>
 
-<script setup></script>
+<script setup>
+const props = defineProps(["orderDetail"]);
+console.log(props);
+</script>
 
 <style>
 .backToProfile {

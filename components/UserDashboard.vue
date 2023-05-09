@@ -9,8 +9,8 @@
                 <img src="/public/images/avtar.jpg" alt="" class="img-fluid" />
               </div>
               <div class="profile-detail">
-                <h5>Mark Jecno</h5>
-                <h6>mark.jecno@mail.com</h6>
+                <h5>{{ store.userLogin.fullname }}</h5>
+                <h6>{{ store.userLogin.email }}</h6>
               </div>
             </div>
             <div class="faq-tab">
@@ -83,7 +83,7 @@
             <div class="tab-pane fade show active" id="info">
               <div class="counter-section">
                 <div class="welcome-msg">
-                  <h4>Xin chào, MARK JECNO !</h4>
+                  <h4>Xin chào,{{ store.userLogin.fullname }}!</h4>
                   <p>
                     Từ Bảng điều khiển tài khoản , bạn có khả năng xem ảnh chụp
                     nhanh hoạt động tài khoản gần đây của bạn và cập nhật thông
@@ -141,9 +141,9 @@
                           <a href="#">Sửa</a>
                         </div>
                         <div class="box-content">
-                          <h6>Mark Jecno</h6>
-                          <h6>mark-jecno@gmail.com</h6>
-                          <h6><a href="#">Change Password</a></h6>
+                          <h6>{{ store.userLogin.fullname }}</h6>
+                          <h6>{{ store.userLogin.email }}</h6>
+                          <h6><a href="#">Đổi mật khẩu</a></h6>
                         </div>
                       </div>
                     </div>
@@ -202,17 +202,35 @@
                           <div class="select-box active col-xl-4 col-md-6">
                             <div class="address-box">
                               <div class="top">
-                                <h6>mark jecno <span>Nhà riêng</span></h6>
+                                <h6>
+                                  {{ store.userLogin.fullname }}
+                                  <span>Nhà riêng</span>
+                                </h6>
                               </div>
                               <div class="middle">
                                 <div class="address">
-                                  <p>549 Sulphur Springs Road</p>
-                                  <p>Downers Grove, IL</p>
-                                  <p>60515</p>
+                                  <p>
+                                    {{
+                                      store.userLogin.shippingAddress.address
+                                    }}
+                                  </p>
+                                  <p>
+                                    {{
+                                      store.userLogin.shippingAddress.province
+                                    }}
+                                  </p>
+                                  <p>
+                                    {{ store.userLogin.shippingAddress.city }}
+                                  </p>
+                                  <p>
+                                    {{
+                                      store.userLogin.shippingAddress.postalCode
+                                    }}
+                                  </p>
                                 </div>
                                 <div class="number">
                                   <p>
-                                    Di động: <span>+91 123 - 456 - 7890</span>
+                                    {{ store.userLogin.shippingAddress.phone }}
                                   </p>
                                 </div>
                               </div>
@@ -231,7 +249,10 @@
                           <div class="select-box col-xl-4 col-md-6">
                             <div class="address-box">
                               <div class="top">
-                                <h6>mark jecno <span>Văn phòng</span></h6>
+                                <h6>
+                                  {{ store.userLogin.fullname }}
+                                  <span>Văn phòng</span>
+                                </h6>
                               </div>
                               <div class="middle">
                                 <div class="address">
@@ -285,196 +306,51 @@
                               <th scope="col">Xem</th>
                             </tr>
                           </thead>
-                          <tbody>
+                          <tbody
+                            v-for="(order, index) in data.orders"
+                            :key="index"
+                          >
                             <tr>
                               <td>
                                 <a href="javascript:void(0)">
                                   <img
-                                    src="/public/images/pro3/1.jpg"
+                                    :src="order.orderItems[0].image"
                                     class="blur-up lazyloaded"
                                     alt=""
                                   />
                                 </a>
                               </td>
                               <td>
-                                <span class="mt-0">#125021</span>
+                                <span class="mt-0">{{
+                                  order.orderNumber
+                                }}</span>
                               </td>
                               <td>
-                                <span class="fs-6">Purple polo tshirt</span>
+                                <span class="fs-6"
+                                  >{{ order.orderItems[0].name }} ...</span
+                                >
                               </td>
                               <td>
                                 <span
                                   class="badge rounded-pill bg-success custom-badge"
-                                  >Đã giao hàng</span
+                                  >{{ order.paymentStatus }}</span
                                 >
                               </td>
                               <td>
-                                <span class="theme-color fs-6">$49.54</span>
+                                <span class="theme-color fs-6">{{
+                                  order.totalPrice.toLocaleString("it-IT", {
+                                    style: "currency",
+                                    currency: "VND",
+                                  })
+                                }}</span>
                               </td>
                               <td>
-                                <a href="javascript:void(0)">
-                                  <i class="fa fa-eye text-theme"></i>
-                                </a>
-                              </td>
-                            </tr>
-
-                            <tr>
-                              <td>
-                                <a href="javascript:void(0)">
-                                  <img
-                                    src="/public/images/pro3/2.jpg"
-                                    class="blur-up lazyloaded"
-                                    alt=""
-                                  />
-                                </a>
-                              </td>
-                              <td>
-                                <span class="mt-0">#125367</span>
-                              </td>
-                              <td>
-                                <span class="fs-6">Sleevless white top</span>
-                              </td>
-                              <td>
-                                <span
-                                  class="badge rounded-pill bg-danger custom-badge"
-                                  >Chưa giải quyết</span
+                                <NuxtLink
+                                  to="tracking-order"
+                                  :orderDetail="order"
                                 >
-                              </td>
-                              <td>
-                                <span class="theme-color fs-6">$49.54</span>
-                              </td>
-                              <td>
-                                <a href="javascript:void(0)">
                                   <i class="fa fa-eye text-theme"></i>
-                                </a>
-                              </td>
-                            </tr>
-
-                            <tr>
-                              <td>
-                                <a href="javascript:void(0)">
-                                  <img
-                                    src="/public/images/pro3/27.jpg"
-                                    class="blur-up lazyloaded"
-                                    alt=""
-                                  />
-                                </a>
-                              </td>
-                              <td>
-                                <p>#125948</p>
-                              </td>
-                              <td>
-                                <p class="fs-6">multi color polo tshirt</p>
-                              </td>
-                              <td>
-                                <span
-                                  class="badge rounded-pill bg-success custom-badge"
-                                  >Shipped</span
-                                >
-                              </td>
-                              <td>
-                                <p class="theme-color fs-6">$49.54</p>
-                              </td>
-                              <td>
-                                <a href="javascript:void(0)">
-                                  <i class="fa fa-eye text-theme"></i>
-                                </a>
-                              </td>
-                            </tr>
-
-                            <tr>
-                              <td>
-                                <a href="javascript:void(0)">
-                                  <img
-                                    src="/public/images/pro3/28.jpg"
-                                    class="blur-up lazyloaded"
-                                    alt=""
-                                  />
-                                </a>
-                              </td>
-                              <td>
-                                <p>#127569</p>
-                              </td>
-                              <td>
-                                <p class="fs-6">Candy red solid tshirt</p>
-                              </td>
-                              <td>
-                                <span
-                                  class="badge rounded-pill bg-success custom-badge"
-                                  >Shipped</span
-                                >
-                              </td>
-                              <td>
-                                <p class="theme-color fs-6">$49.54</p>
-                              </td>
-                              <td>
-                                <a href="javascript:void(0)">
-                                  <i class="fa fa-eye text-theme"></i>
-                                </a>
-                              </td>
-                            </tr>
-
-                            <tr>
-                              <td>
-                                <a href="javascript:void(0)">
-                                  <img
-                                    src="/public/images/pro3/33.jpg"
-                                    class="blur-up lazyloaded"
-                                    alt=""
-                                  />
-                                </a>
-                              </td>
-                              <td>
-                                <p>#125753</p>
-                              </td>
-                              <td>
-                                <p class="fs-6">multicolored polo tshirt</p>
-                              </td>
-                              <td>
-                                <span
-                                  class="badge rounded-pill bg-secondary custom-badge"
-                                  >Canceled</span
-                                >
-                              </td>
-                              <td>
-                                <p class="theme-color fs-6">$49.54</p>
-                              </td>
-                              <td>
-                                <a href="javascript:void(0)">
-                                  <i class="fa fa-eye text-theme"></i>
-                                </a>
-                              </td>
-                            </tr>
-
-                            <tr>
-                              <td>
-                                <a href="javascript:void(0)">
-                                  <img
-                                    src="/public/images/pro3/34.jpg"
-                                    class="blur-up lazyloaded"
-                                    alt=""
-                                  />
-                                </a>
-                              </td>
-                              <td>
-                                <span>#125021</span>
-                              </td>
-                              <td>
-                                <span class="fs-6">Men's Sweatshirt</span>
-                              </td>
-                              <td>
-                                <span
-                                  class="badge rounded-pill bg-secondary custom-badge"
-                                  >Canceled</span
-                                >
-                              </td>
-                              <td>
-                                <span class="theme-color fs-6">$49.54</span>
-                              </td>
-                              <td>
-                                <a href="javascript:void(0)">
-                                  <i class="fa fa-eye text-theme"></i>
-                                </a>
+                                </NuxtLink>
                               </td>
                             </tr>
                           </tbody>
@@ -516,7 +392,7 @@
                                 </a>
                               </td>
                               <td>
-                                <span class="mt-0">#125021</span>
+                                <span class="mt-0">{{}}</span>
                               </td>
                               <td>
                                 <span>Purple polo tshirt</span>
@@ -1089,8 +965,35 @@
   </section>
 </template>
 
-<script>
-export default {};
+<script setup>
+import { userStore } from "@/stores/user";
+const store = userStore();
+const runtimeConfig = useRuntimeConfig();
+const apiBase = runtimeConfig.public.apiBase;
+const { data } = await useFetch(
+  apiBase + "/orders/user/" + store.userLogin._id,
+  {
+    method: "GET",
+
+    initialCache: false,
+    headers: {
+      "Content-Type": "application/json",
+
+      authorization: `Bearer ${store.userToken}`,
+      // Access a private variable (only available on the server)
+    },
+    onResponse({ request, response, options }) {
+      // Process the response data
+      if (response.status === 403) {
+        createToast("Không tìm thấy sản phẩm !", toastOption);
+      }
+      if (response.status === 500) {
+        createToast("Đã có lỗi xảy ra!", toastOption);
+      }
+      // console.log(response._data.brands);
+    },
+  }
+);
 </script>
 
 <style></style>

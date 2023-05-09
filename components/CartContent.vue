@@ -65,7 +65,7 @@
                         type="number"
                         name="quantity"
                         class="form-control input-number"
-                        v-model="item.quantity"
+                        v-model="item.itemBuy"
                       />
                     </div>
                   </div>

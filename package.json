@@ -9,8 +9,8 @@
     "postinstall": "nuxt prepare"
   },
   "devDependencies": {
-    "nuxt": "^3.4.1",
-    "sass": "^1.62.0"
+    "nuxt": "^3.4.3",
+    "sass": "^1.62.1"
   },
   "dependencies": {
     "@chenfengyuan/vue-countdown": "2",
@@ -19,11 +19,14 @@
     "mosha-vue-toastify": "^1.0.23",
     "multi-range-slider-vue": "^1.1.4",
     "nuxt-swiper": "^1.1.0",
+    "nuxt3-socket.io": "^0.1.0",
     "photoswipe": "github:dimsemenov/photoswipe#v5-beta",
     "pinia-plugin-persistedstate": "^3.1.0",
     "sass-loader": "^13.2.2",
     "scss": "^0.2.4",
-    "swiper": "^9.2.4",
+    "socket.io": "^4.6.1",
+    "socket.io-client": "^4.6.1",
+    "swiper": "^9.3.0",
     "vue": "3",
     "vue-slick-carousel": "^1.0.6"
   }

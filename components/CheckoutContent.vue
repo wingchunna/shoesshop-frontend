@@ -16,7 +16,7 @@
                       type="text"
                       name="field-name"
                       placeholder=""
-                      v-model="store.userLogin.firstName"
+                      v-model="store.shippingAddress.firstName"
                     />
                   </div>
                   <div class="form-group col-md-6 col-sm-6 col-xs-12">
@@ -24,7 +24,7 @@
                     <input
                       type="text"
                       name="field-name"
-                      v-model="store.userLogin.lastName"
+                      v-model="store.shippingAddress.lastName"
                       placeholder=""
                     />
                   </div>
@@ -33,7 +33,7 @@
                     <input
                       type="text"
                       name="field-name"
-                      v-model="store.userLogin.phone"
+                      v-model="store.shippingAddress.phone"
                       placeholder=""
                     />
                   </div>
@@ -52,7 +52,7 @@
                     <input
                       type="text"
                       name="field-name"
-                      v-model="store.userLogin.address"
+                      v-model="store.shippingAddress.address"
                       placeholder="Street address"
                     />
                   </div>
@@ -61,7 +61,7 @@
                     <input
                       type="text"
                       name="field-name"
-                      v-model="store.userLogin.city"
+                      v-model="store.shippingAddress.city"
                       placeholder=""
                     />
                   </div>
@@ -70,7 +70,7 @@
                     <input
                       type="text"
                       name="field-name"
-                      v-model="store.userLogin.province"
+                      v-model="store.shippingAddress.province"
                       placeholder=""
                     />
                   </div>
@@ -79,7 +79,7 @@
                     <input
                       type="text"
                       name="field-name"
-                      v-model="store.userLogin.country"
+                      v-model="store.shippingAddress.country"
                       placeholder=""
                     />
                   </div>
@@ -88,7 +88,7 @@
                     <input
                       type="text"
                       name="field-name"
-                      v-model="store.userLogin.postalCode"
+                      v-model="store.shippingAddress.postalCode"
                       placeholder=""
                     />
                   </div>
@@ -118,7 +118,7 @@
                       :key="index"
                     >
                       <li>
-                        {{ item.name }} × {{ item.quantity }}
+                        {{ item.name }} × {{ item.itemBuy }}
                         <span
                           ><b>{{
                             item.totalPrice.toLocaleString("it-IT")
@@ -207,6 +207,12 @@
                               >
                             </div>
                           </li>
+                          <li style="color: red">
+                            Số tài khoản : 9704198526191432198
+                          </li>
+                          <li style="color: red">Chủ thẻ : NGUYEN VAN A</li>
+                          <li style="color: red">Mgày phát hành : 07/15</li>
+                          <li style="color: red">OTP : 123456</li>
                         </ul>
                       </div>
                     </div>
@@ -229,11 +235,18 @@
 <script setup>
 import { userStore } from "@/stores/user";
 import { cartStore } from "@/stores/cart";
+// import { io } from "socket.io-client";
 const store = userStore();
+// const socket = io("http://localhost:3300", {
+//   extraHeaders: {
+//     Authorization: `Bearer ${store.userToken}`,
+//   },
+// });
+
 const userCartStore = cartStore();
 const runtimeConfig = useRuntimeConfig();
 const apiBase = runtimeConfig.public.apiBase;
-
+const trueCost = userCartStore.totalSum;
 import { createToast } from "mosha-vue-toastify";
 const toastOption = {
   showCloseButton: true,
@@ -270,22 +283,74 @@ async function handleApplyCoupon(coupon) {
 }
 
 let payment = ref(1);
-let coupon = ref();
-function handleCheckout() {
+let coupon = ref("");
+async function handleCheckout() {
   if (payment.value == 1) {
-    // xử lý hàm tạo order với vnpay
-    // chuyển sang trang thanh toán thành công
+    // kiểm tra xem có địa chỉ giao hàng chưa
 
-    navigateTo({
-      path: "/order-success",
-    });
+    if (!store.userLogin.fullname) {
+      createToast("Bạn cần đăng nhập để thanh toán !", toastOption);
+      navigateTo({
+        path: "/login",
+      });
+    } else {
+      if (!store.userLogin.hasShippingAddress) {
+        createToast("Bạn chưa có địa chỉ giao hàng !", toastOption);
+      }
+      // xử lý hàm tạo order với vnpay
+      const data = {
+        orderItems: userCartStore.productInCart,
+        shippingAddress: store.userLogin.shippingAddress,
+        totalPrice: trueCost,
+      };
+
+      const { data: vnpay_url } = await useFetch(
+        apiBase + "/orders?coupon=" + coupon.value,
+        {
+          method: "POST",
+          body: data,
+
+          initialCache: false,
+          headers: {
+            "Content-type": "application/json",
+            authorization: `Bearer ${store.userToken}`,
+            // Access a private variable (only available on the server)
+          },
+          onResponse({ request, response, options }) {
+            // Process the response data
+            if (response.status === 403) {
+              createToast("Không tìm thấy sản phẩm !", toastOption);
+            }
+            if (response.status === 500) {
+              console.log(response);
+              createToast("Đã có lỗi xảy ra!", toastOption);
+            }
+            // thành công, tạo state order
+            // redirect sang trang thông báo đặt hàng thành công
+
+            // socket.emit("Client-sent-data", "Hello");
+
+            // socket.on("Server-sent-data", function (data) {
+            //   console.log(data);
+            // });
+            // gửi mail xác nhận đặt hàng thành công
+            //Xóa cart
+            userCartStore.resetCart();
+            window.location.replace(response._data.url);
+          },
+        }
+      );
+      // chuyển sang trang thanh toán thành công
+    }
   } else {
+    // kiểm tra xem có địa chỉ giao hàng chưa
+    if (!store.userLogin.hasShippingAddress) {
+      createToast("Bạn chưa có địa chỉ giao hàng !", toastOption);
+    } else {
+    }
     // xử lý hàm tạo order
 
     // chuyển sang trang thanh toán thành công
-    navigateTo({
-      path: "/order-success",
-    });
   }
 }
 </script>

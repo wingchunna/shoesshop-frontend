@@ -1,6 +1,6 @@
 <template>
   <section class="section-b-space">
-    <div class="container">
+    <!-- <div class="container">
       <div class="row">
         <div class="col-lg-6">
           <div class="product-order">
@@ -105,7 +105,7 @@
           </div>
         </div>
       </div>
-    </div>
+    </div> -->
   </section>
 </template>
 

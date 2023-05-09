@@ -39,6 +39,9 @@
 
                 <ul class="onhover-show-div">
                   <li v-if="store.userLogin.fullname">
+                    <NuxtLink to="/user-dashboard">Quản lý tài khoản</NuxtLink>
+                  </li>
+                  <li v-if="store.userLogin.fullname">
                     <NuxtLink to="/login" @click="handleLogout()"
                       >Đăng xuất</NuxtLink
                     >
@@ -203,7 +206,7 @@
                               <h6>
                                 <span
                                   ><b
-                                    >{{ item.quantity }} x {{ item.price }}</b
+                                    >{{ item.itemBuy }} x {{ item.price }}</b
                                   ></span
                                 >
                               </h6>

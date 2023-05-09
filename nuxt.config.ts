@@ -65,7 +65,7 @@ export default defineNuxtConfig({
     data: fileURLToPath(new URL("./assets/other/data", import.meta.url)),
     script: fileURLToPath(new URL("/public/js", import.meta.url)),
   },
-  modules: ["nuxt-swiper", "@pinia/nuxt"],
+  modules: ["nuxt-swiper", "@pinia/nuxt", "socket.io-client"],
   swiper: {
     // Swiper options
     //----------------------

@@ -597,10 +597,11 @@ function handleAddToCart() {
     createToast("Bạn cần chọn màu sắc hoặc size của sản phẩm !", toastOption);
   } else {
     const product = {
+      productId: props.product._id,
       name: props.product.name,
       image: props.product.images[0],
       price: props.product.price,
-      quantity: quantity.value,
+      itemBuy: quantity.value,
       color: colorChoosed.value,
       size: sizeChoosed.value,
       totalPrice: props.product.price * quantity.value,
